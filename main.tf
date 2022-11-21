@@ -1,47 +1,25 @@
-# Require TF version to be same as or greater than 0.12.13 #
-terraform {
-  required_version = ">=0.12.13"
- # backend "s3" {
- #   bucket         = "kyler-github-actions-demo-terraform-tfstate"
- #   key            = "terraform.tfstate"
- #   region         = "us-east-1"
- #   dynamodb_table = "aws-locks"
- #   encrypt        = true
- # }
-}
-
-# Download any stable version in AWS provider of 2.36.0 or higher in 2.36 train
-provider "aws" {
-  region  = "us-east-1"
-  version = "~> 2.36.0"
-}
-
-
-
-
-
-# use ubuntu 20 AMI for EC2 instance
-data "aws_ami" "ubuntu" {
-    most_recent = true
-filter {
-        name   = "name"
-        values = ["ubuntu/images/hvm-ssd/*20.04-amd64-server-*"]
+##Create and bootstrap webserver
+resource "aws_instance" "webserver" {
+  ami                         = data.aws_ssm_parameter.webserver-ami.value
+  instance_type               = "t3.micro"
+  key_name                    = aws_key_pair.webserver-key.key_name
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.sg.id]
+  subnet_id                   = aws_subnet.subnet.id
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum -y install httpd && sudo systemctl start httpd",
+      "echo '<h1><center>My Test Website With Help From Terraform Provisioner</center></h1>' > index.html",
+      "sudo mv index.html /var/www/html/"
+    ]
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file("~/.ssh/id_rsa")
+      host        = self.public_ip
     }
-filter {
-        name   = "virtualization-type"
-        values = ["hvm"]
-    }
-owners = ["099720109477"] # Canonical
-}
-# provision to us-east-2 region
-#provider "aws" {
-#  region  = "us-east-2"
-#}
-resource "aws_instance" "app_server" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  key_name      = "app-ssh-key"
-tags = {
-    Name = "ubuntu-ec2"
+  }
+  tags = {
+    Name = "webserver"
   }
 }
