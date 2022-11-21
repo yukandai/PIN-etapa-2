@@ -1,4 +1,4 @@
-##Create and bootstrap webserver
+##Create and bootstrap webserver #lanzar
 resource "aws_instance" "webserver" {
   ami                         = data.aws_ssm_parameter.webserver-ami.value
   instance_type               = "t3.micro"
