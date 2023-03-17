@@ -6,7 +6,8 @@ resource "aws_instance" "webserver" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.sg.id]
   subnet_id                   = aws_subnet.subnet.id
-  user_data                   = file("create_apache.sh")
+  user_data                   = "${file("user-data-apache.sh")}"
+
   tags = {
     Name = "webserver"
   }
