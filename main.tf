@@ -9,4 +9,10 @@ resource "aws_instance" "webserver" {
   tags = {
     Name = "webserver"
   }
+## Add MG
+provisioner "local-exec" {
+    command = "sudo yum -y install httpd && sudo systemctl enable httpd --now"
+
+}
+
 }
