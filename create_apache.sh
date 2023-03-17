@@ -1,4 +1,4 @@
-sudo su -
-yum -y install httpd
-echo "<p> Coded by QQmelo </p>" >> /var/www/html/index.html
+#! /bin/bash
+sudo yum update -y
+sudo yum install -y httpd.x86_64
 sudo systemctl enable httpd --now
