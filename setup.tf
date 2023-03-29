@@ -1,15 +1,6 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.0"
-    }
-  }
-#
-  required_version = ">=0.14.9"
-
+provider "aws" {
+  region = "us-east-1"
 }
-
 
 #Get Linux AMI ID using SSM Parameter endpoint in us-east-1
 data "aws_ssm_parameter" "webserver-ami" {
