@@ -1,3 +1,3 @@
 # gh-tf-mio
 
-lanzando v8 con buckets y dinamodb!
+lanzando v9 con buckets y dinamodb!
