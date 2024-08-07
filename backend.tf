@@ -1,9 +1,9 @@
 terraform {
   backend "s3"{
-#    bucket                 = "mi-bucket-de-ejemplo"
+    bucket                 = "mundose-tf-2024"
     region                 = "us-east-1"
     key                    = "backend.tfstate"
-    dynamodb_table         = "terraformstatelock"
+#    dynamodb_table         = "terraformstatelock"
   }
 }
 
