@@ -40,6 +40,12 @@ resource "aws_security_group" "sg" {
   }
 }
 
+#recurso de amazon
+resource "aws_s3_bucket" "example_bucket" {
+  bucket = "mi-bucket-de-ejemplo"
+  acl = "private"
+}
+
 output "Webserver-Public-IP" {
   value = aws_instance.webserver.public_ip
 }
