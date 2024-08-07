@@ -2,6 +2,7 @@ name: Terraform Apply
 
 #branch de trabajo
 on: 
+  workflow_dispatch:
   push:
    branches:
    - deploy-terraform
