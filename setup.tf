@@ -8,16 +8,11 @@ data "aws_region" "current" {}
 #data source para id de la cuenta de AWS
 data "aws_caller_identity" "current" {}
 
-data "aws_subnet" "az_a" {
-  vpc_id            = data.aws_vpc.vpc_default.id
-  availability_zone = "us-east-1"
-}
-
 #Create SG for allowing TCP/80 & TCP/22
 resource "aws_security_group" "sg" {
-  name        = "sg"
+  name        = "webserver-sg"
   description = "Allow TCP/80 & TCP/22"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = data.aws_vpc.vpc_default.id
   ingress {
     description = "Allow SSH traffic"
     from_port   = 22
